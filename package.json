@@ -1,0 +1,28 @@
+{
+  "name": "async-patterns-in-javascript",
+  "version": "1.0.0",
+  "description": "exploring asynchronous patterns in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annabkr/async-patterns-in-javascript.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/annabkr/async-patterns-in-javascript/issues"
+  },
+  "homepage": "https://github.com/annabkr/async-patterns-in-javascript#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4"
+  }
+}
