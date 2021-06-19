@@ -9,6 +9,8 @@ Like Generators, this approach allows execution to be paused and resumed.
 
 In essence, these features are syntactic sugar on top of promises.
 
+An async function can also be decomposed into a generator/promise implementation.
+
 The await keyword pauses the async function execution until the Promise
 is resolved or rejected. Other tasks are still able to run in the meantime.
 
