@@ -1,10 +1,8 @@
+/* eslint-disable no-console */
 const fetch = require('node-fetch');
 
 const URL = 'https://api.icndb.com/jokes/random';
 
-/*
-
-*/
 
 async function getData() {
   const response = await fetch(URL);
@@ -27,11 +25,3 @@ const getMoreData = async () => {
 };
 
 getMoreData();
-
-// function printHello(){
-//   console.log("Hello");
-// }
-
-// setTimeout(printHello, 1000);
-
-// console.log("Me");
