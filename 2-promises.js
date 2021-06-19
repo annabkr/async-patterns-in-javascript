@@ -1,75 +1,94 @@
 const fetch = require('node-fetch');
 
-/* Promise Approach */
+/* The Promise Approach was introduced in ES6 (ECMAScript 2015) */
 
-/* 
-function Promise(func) {
-  var state = ‘pending’; 
-  var deferred = null; 
-  var value;
-  function resolve(){...}
-  function reject(){...}
-  function handle(){...}
-  
-  this.then = function(){...}
-  func(resolve, reject);
+/* A Promise object is a wrapper for an eventual value that might not yet exist.
+
+The Promise object supports two private properties: state & result.
+State can be one of:      pending | fulfilled | rejected 
+Result can be one of:     undefined | a value | and error object
+The type of the result corresponds to the current state.
+
+The Promise object also has multiple methods available. We'll focus on:
+then: 
+      Receives the resolved value of a Promise. 
+      Can take 1-2 optional callback functions (onFulfilled, onRejected).
+      Returns a promise itself.
+catch:
+
+*/
+
+/* The Promise constructor expects an executor callback function to be given as a parameter.
+In turn, it will provide the executor callback with two callbacks of its own: resolve + reject.
+The resolve callback is used to resolve the promise with a value or the result of another promise.
+The reject callback is used to reject the promise with a provided reason or error.
+*/
+async function getManners(word) {
+  console.log(`Calling getManners with word ${word}`)
+
+  const executor = (resolve, reject) => {
+    if (word === 'please'){
+      setTimeout(() => resolve('thank you'), 1000);
+    } else { 
+       reject(new Error('houston there was a problem'));
+    }
+  }
+
+  return new Promise(executor)
 }
-*/
 
-// there are two things to cover: what happens when a Promise is instantiated, and what happens after a Promise is returned.
+getManners('please')
+.then((result) => console.log('result: ', result))
+.catch((error) => console.error(error))
 
-/* A Promise object is a temporary wrapper for an eventual value.
-When an API request is first made, the Promise object will look something like this:
- 
-However, once the request is fulfilled/rejected, the associated callback functions will be placed
-on the callback queue and await their turn in the event loop.
-*/
+// this would error out and log the error message + stack trace
+// getManners('no')
+// .then((result) => console.log('result: ', result))
+// .catch((error) => console.error(error))
+
 const URL = 'https://cataas.com/cat?json=true';
-
 const catPhotos = []
 
 /*
 The fetch method returns a Promise.
 */
 fetch(URL)
-.then((catData) => catPhotos.push(catData.url))
+.then((catData) => catData.json())
+.then((catJson) => catPhotos.push(catJson.url))
+.then(() => printCatUrls(catPhotos))
+.catch((error) => console.error(error))
+
+const getCat = () => {
+  const catData = fetch(URL);
+  return catData
+}
+
+const catFamily = {}
+
+/*
+Promises help to make asynchronous calls that depend on each other a bit cleaner
+than the callback approach used before ES6.
+*/
+getCat()
+.then((catData) => catData.json())
+.then((catJson) => catFamily["Grandmother"] = makeCat(catJson.url, catFamily))
+.then(() => getCat())
+.then((catData) => catData.json())
+.then((catJson) => catFamily["Mother"] = makeCat(catJson.url, catFamily))
+.then(() => getCat())
+.then((catData) => catData.json())
+.then((catJson) => catFamily["Kitten"] = makeCat(catJson.url, catFamily))
+.then(() => printCatFamily(catFamily))
 .catch((error) => console.log(error))
-
-
-const asyncCall = (url) => {
-    const promise = fetch(url);
-    console.log(JSON.stringify(promise));
-
-}
-
-asyncCall(URL);
-
-async function getData(word) {
-  return new Promise((resolve, reject) => {
-      if (word === 'please'){
-        setTimeout(() => resolve(), 1000);
-      } else {
-          reject();
-      }
-  })
-}
-
-const futureData = getData('please')
-
-function fetchData() {
-  getData()
-    .then((data) => console.log('data: ', data))
-    .catch((error) => console.log('error: ', error));
-}
  
+const printCatUrls = (kittyUrls) => {
+  console.log('Kitty photo URLs: ', kittyUrls);
+} 
 
-const getMoreData = async () => {
-  fetch(URL)
-    .then((data) => console.log('got more data: ', data))
-    .catch((error) => console.log('error: ', error));
-};
- 
+const printCatFamily = (kittyFam) => {
+  console.log('Kitty family: ', JSON.stringify(kittyFam));
+} 
 
-// defining your own promises
-
-// promise.all
+function makeCat(url, ancestors){
+  return { photo: url, ancestors: Object.entries(ancestors)}
+}

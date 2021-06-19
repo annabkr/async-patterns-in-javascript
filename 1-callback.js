@@ -8,7 +8,7 @@ const useJSON = { json: true }
 
 /*
 The callback approach to asynchronous JavaScript involves passing a function
-definition to the hosting environment (client browser API or Node.js background thread).
+definition to the hosting environment (client browser, Node.js, etc.)
 Once the request has completed, the hosting environmnet will put the function definition back in the
 JS callback queue. When the execution stack is empty, it will end up in the event loop.
 */
