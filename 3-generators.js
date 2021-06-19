@@ -1,11 +1,9 @@
-const { default: fetch } = require('node-fetch');
 const randomNumber = require('random-number')
 
-/* This assumes knowledge of Iterators */
-
 /* 
-Generators were introduced in ES6 (ECMAScript 2015) 
-They are essentially syntactic sugar for custom iterators.
+Generators were introduced in ES6 (ECMAScript 2015) alongside Iterators and Promises.
+These examples assume general knowledge of Iterators in JavaScript.
+Generators are essentially syntactic sugar for custom iterators.
 They allow pausing the execution of functions (using yield).
 */
 
@@ -88,12 +86,13 @@ the value of the next call to iterator.next()
     }
 
     const iterator = someCats()
-    console.log('iterator.next(): ', iterator.next())
-    console.log('iterator.next(): ', iterator.next())
-    console.log('iterator.next(): ', iterator.next())
+    console.log('iterator.next(): ', iterator.next()) //'sammy the siamese'
+    console.log('iterator.next(): ', iterator.next()) //'fluffy the ragdoll'
+    console.log('iterator.next(): ', iterator.next()) //'ginger the tabbycat'
 })()
 
 const URL = 'https://cataas.com/cat?json=true';
+
 /* 
 Generator functions can be used asynchronously
 */

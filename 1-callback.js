@@ -20,14 +20,18 @@ function handleCatJoke(error, response, body) {
   }
 }
 
-request('https://cat-fact.herokuapp.com/facts/random', useJSON, handleCatJoke);
+function makeCatJokeRequest(){
+    request('https://cat-fact.herokuapp.com/facts/random', useJSON, handleCatJoke);
+}
+
+makeCatJokeRequest();
 
 /*
 One of the major drawbacks to this approach was the challenge of adding complexity.
 Making function calls that depended on the result of other asynchronous function calls
 often ended up resulting in cascading fallback functions aka "Callback Hell"
 */
-function makeCatFamily() {
+(function makeCatFamily() {
     const catFamily = {};  
     request('https://randomuser.me/api/', useJSON,  (err, response, body) => {
         checkError(err)
@@ -45,7 +49,7 @@ function makeCatFamily() {
     })
     //no kitties here yet due to asynchronosity
     console.log('\ncatFamily outside the makeCatFamily callback train will be empty: ', JSON.stringify(catFamily), '\n');
-}
+})()
 
 function checkError(err){
     if (err) {
@@ -60,6 +64,4 @@ function getCatName(catData){
 function makeCat(ancestors, catData){
     return { name: getCatName(catData), ancestors: Object.entries(ancestors)}
 }
-
-
-makeCatFamily();
+ 
