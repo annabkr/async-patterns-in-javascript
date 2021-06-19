@@ -18,6 +18,7 @@
   "homepage": "https://github.com/annabkr/async-patterns-in-javascript#readme",
   "dependencies": {
     "node-fetch": "^2.6.1",
+    "random-number": "^0.0.9",
     "request": "^2.88.2"
   },
   "devDependencies": {
