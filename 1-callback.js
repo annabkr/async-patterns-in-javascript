@@ -4,26 +4,28 @@
 const request = require('request');
 const useJSON = { json: true }
 
+/* Cooperative Asynchronous JavaScript - The Callback Approach */
+
 /*
 The callback approach to asynchronous JavaScript involves passing a function
 definition to the hosting environment (client browser API or Node.js background thread).
-Once the request has completed, the hosting env will put the function definition back in the
+Once the request has completed, the hosting environmnet will put the function definition back in the
 JS callback queue. When the execution stack is empty, it will end up in the event loop.
 */
 function handleCatJoke(error, response, body) {
   if (error) {
     console.log(error);
   } else {
-    console.log(body.text, "\n"); 
+    console.log('The output of a single API call using a callback function: \n\n', body.text, "\n"); 
   }
 }
 
 request('https://cat-fact.herokuapp.com/facts/random', useJSON, handleCatJoke);
 
 /*
-One of the major drawbacks to this approach was the challenge of
-adding complexity. Making requests that depended on the result
-of other requests often ended up in "Callback Hell"
+One of the major drawbacks to this approach was the challenge of adding complexity.
+Making function calls that depended on the result of other asynchronous function calls
+often ended up resulting in cascading fallback functions aka "Callback Hell"
 */
 function makeCatFamily() {
     const catFamily = {};  
@@ -37,12 +39,12 @@ function makeCatFamily() {
                 checkError(err)
                 catFamily["Kitten"] = makeCat(catFamily, body.results);
                 //kitties exist here
-                console.log('catFamily inside the callback: ', JSON.stringify(catFamily), '\n\n');
+                console.log('catFamily inside the callback will have the family of cats: ', JSON.stringify(catFamily), '\n\n');
             }) 
         }) 
     })
     //no kitties here yet due to asynchronosity
-    console.log('catFamily outside the callback: ', JSON.stringify(catFamily), '\n');
+    console.log('\ncatFamily outside the makeCatFamily callback train will be empty: ', JSON.stringify(catFamily), '\n');
 }
 
 function checkError(err){
